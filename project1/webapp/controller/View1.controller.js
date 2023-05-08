@@ -16,10 +16,11 @@ sap.ui.define([
             onInit: function () {
                 var oModel = new JSONModel({
                     ValueHelpData : [
-                        { Name : "목록1", Desc : "설명1"},
-                        { Name : "목록2", Desc : "설명2"},
-                        { Name : "목록3", Desc : "설명3"},
-                    ]
+                        { Name : "test sample1", Desc : "설명1"},
+                        { Name : "test sample2", Desc : "설명2"},
+                        { Name : "test sample3", Desc : "설명3"},
+                    ],
+                    value: null
 
                 } )
                 var oView = this.getView();
@@ -40,7 +41,10 @@ sap.ui.define([
                 var sValue = oEvent.getParameter("value"),
                     bEsc = oEvent.getParameter("escPressed"),//이벤트 초기화한건지 지운건지 알수 있음
                     sPrevious = oEvent.getParameter("previousValue");
-                    MessageToast.show(sValue  + "\n" + bEsc + "\n" + sPrevious);
+                var sValue2 = this.getView().getModel("view").getProperty("/value");
+                    MessageToast.show(sValue  + "\n" + bEsc + "\n" + sPrevious + "\n" + sValue2);
+
+              
 
             },
             onLiveChange2: function(oEvent) {
@@ -63,6 +67,7 @@ sap.ui.define([
             handleValueHelp : function (oEvent) {
                 var oView = this.getView();
                 this._oInput = oEvent.getSource();
+                var sValue =  oEvent.getSource();
         
                 // create value help dialog
                 if (!this._pValueHelpDialog) {
@@ -78,7 +83,10 @@ sap.ui.define([
         
                 // open value help dialog
                 this._pValueHelpDialog.then(function(oValueHelpDialog){
+                    oValueHelpDialog._searchField.setValue(sValue); //검색어
                     oValueHelpDialog.open();
+                    
+                    debugger;
                 });
             },
 
@@ -98,6 +106,15 @@ sap.ui.define([
                     oInput.setValue(oSelectedItem.getTitle());
                 }
                 oEvent.getSource().getBinding("items").filter([]);
+            },
+            onSuggest: function(oEvent) {
+                var sTerm = oEvent.getParameter("suggestValue");
+                var aFilters = [];
+                if (sTerm) {
+                    aFilters.push(new Filter("Name", FilterOperator.Contains, sTerm));
+                }
+    
+                oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
             }
 
         });

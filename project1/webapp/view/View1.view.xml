@@ -1,4 +1,5 @@
-<mvc:View controllerName="project1.controller.View1"
+<mvc:View 
+    xmlns:core="sap.ui.core" controllerName="project1.controller.View1"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m"
     xmlns:l="sap.ui.layout"
@@ -17,9 +18,26 @@
                           
                           <Label text="liveChange 이벤트" />
                           <Input liveChange="onLiveChange" description="모든 입력관련 키 입력시 실행"/>
-                   
-                            <Label text="suggest 이벤트" />
+                         
+                          <Label text="liveChange 프로퍼티 바인딩" />
+                          <Input liveChange="onLiveChange" value="{veiw>/value}" valueLiveUpdate="true" description="모든 입력관련 키 입력시 실행"/>
+                    
+                        <Label text="value help 이벤트" />
                           <Input showValueHelp="true" valueHelpRequest="handleValueHelp" description=""/>
+                           
+                        <Label text="suggest 기능" />
+                          <Input showSuggestion="true" suggestionItems="{view>/ValueHelpData}"  description="">
+                                <suggestionItems>
+                                      <core:Item text="{view>Name}"></core:Item>
+                                </suggestionItems>
+                          </Input>
+                          
+                           <Input showSuggestion="true" suggestionItems="{view>/ValueHelpData}"  
+                                  suggest=".onSuggest" description="">
+                                <suggestionItems>
+                                      <core:Item text="{view>Name}"></core:Item>
+                                </suggestionItems>
+                          </Input>
                           
                     </f:content>
                 </f:SimpleForm>
